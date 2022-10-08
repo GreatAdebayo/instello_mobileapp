@@ -1,0 +1,12 @@
+export const SET_SEARCHING = "SET_SEARCHING";
+export const SEARCH_USER_SUCCESS = "SEARCH_USER_SUCCESS";
+export const SEARCH_USER_FAIL = "SEARCH_USER_FAIL";
+export const REMOVE_USER = "REMOVE_USER";
+export const IS_LOADING = "IS_LOADING";
+export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
+export const PROFILE_FAIL = "PROFILE_FAIL";
+export const CLEAR_MSG = "CLEAR_MSG";
+export const FOLLOW_SUCESS = "FOLLOW_SUCESS";
+export const FOLLOW_FAIL = "FOLLOW_FAIL";
+export const UNFOLLOW_SUCESS = "UNFOLLOW_SUCESS";
+export const UNFOLLOW_FAIL = "UNFOLLOW_FAIL";
