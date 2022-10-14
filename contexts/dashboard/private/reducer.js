@@ -11,6 +11,18 @@ import {
   UPLOADED_SUCCESS,
   UPLOADED_FAIL,
   CLEAR_UPLOAD_MSG,
+  FETCH_FEEDS_SUCCESS,
+  FETCH_FEEDS_FAIL,
+  IS_FETCHING,
+  TOGGLE_READMORE,
+  IS_FETCH_COMMENTS,
+  FETCH_COMMENTS_SUCCESS,
+  FETCH_COMMENTS_FAIL,
+  ADD_COMMENT,
+  SAVE_POST,
+  IS_FETCHING_PRIVATE_POST,
+  FETCH_PRIVATE_POST_SUCCESS,
+  FETCH_PRIVATE_POST_FAIL,
 } from "./action";
 
 const privateReducer = (state, action) => {
@@ -116,6 +128,88 @@ const privateReducer = (state, action) => {
         isUploading: false,
       };
 
+    case IS_FETCHING:
+      return {
+        ...state,
+        isFetching: true,
+      };
+
+    case FETCH_FEEDS_SUCCESS:
+      return {
+        ...state,
+        feeds: action.payload,
+        isFetching: false,
+        fetchingFailMsg: null,
+      };
+
+    case FETCH_FEEDS_FAIL:
+      return {
+        ...state,
+        isFetching: false,
+        fetchingFailMsg: action.payload,
+      };
+
+    case TOGGLE_READMORE:
+      let feed = state.feeds.find((feed) => feed._id == action.payload);
+      feed.isReadMore = !feed.isReadMore;
+      feed.isReadLess = !feed.isReadLess;
+      return {
+        ...state,
+        feeds: state.feeds,
+      };
+
+    case IS_FETCH_COMMENTS:
+      return {
+        ...state,
+        isFetchingComment: true,
+      };
+
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
+      };
+
+    case FETCH_COMMENTS_SUCCESS:
+      return {
+        ...state,
+        comments: action.payload,
+        isFetchingComment: false,
+      };
+
+    case FETCH_COMMENTS_FAIL:
+      return {
+        ...state,
+        isFetchingComment: false,
+        fetchCommentFailMsg: action.payload,
+        comments: [],
+      };
+
+    case SAVE_POST:
+      return {
+        ...state,
+        savedPosts: [...state.savedPosts, action.payload],
+      };
+
+    case IS_FETCHING_PRIVATE_POST:
+      return {
+        ...state,
+        isFetchingPrivatePosts: true,
+      };
+
+    case FETCH_PRIVATE_POST_SUCCESS:
+      return {
+        ...state,
+        privatePosts: action.payload,
+        isFetchingPrivatePosts: false,
+      };
+
+    case FETCH_PRIVATE_POST_FAIL:
+      return {
+        ...state,
+        isFetchingPrivatePosts: false,
+        isFetchingPrivateFailMsg: action.payload,
+      };
     default:
       return state;
   }

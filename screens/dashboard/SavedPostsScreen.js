@@ -5,10 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneralContext } from "../../contexts/general/state";
 import { MaterialIcons } from "@expo/vector-icons";
 import SavedPosts from "../../components/SavedPosts";
+import { PrivateContext } from "../../contexts/dashboard/private/state";
 
 const SavedPostsScreen = ({ navigation }) => {
   const { height, width } = Dimensions.get("window");
   const { colorMode } = useContext(GeneralContext);
+  const { savedPosts } = useContext(PrivateContext);
   return (
     <SafeAreaView
       style={{

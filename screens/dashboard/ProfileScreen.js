@@ -18,20 +18,24 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
-import FreePosts from "../../components/FreePosts";
+import ImagePosts from "../../components/ ImagePosts";
 import { AuthContext } from "../../contexts/auth/state";
 import MenuModal from "../../components/MenuModal";
+import VideoPosts from "../../components/VideoPosts";
 
 const ProfileScreen = ({ navigation }) => {
   const { height, width } = Dimensions.get("window");
   const { colorMode } = useContext(GeneralContext);
   const { userInfo, isLoading, persitSignin } = useContext(AuthContext);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const [view, setView] = useState({ image: true, video: false });
   const openModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const toggleView = (val1, val2) => {
+    setView({ ...view, image: val1, video: val2 });
+  };
   return (
     <SafeAreaView
       style={{
@@ -41,6 +45,7 @@ const ProfileScreen = ({ navigation }) => {
       }}
     >
       <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={persitSignin} />
         }
@@ -290,41 +295,59 @@ const ProfileScreen = ({ navigation }) => {
         </TouchableOpacity>
         <View
           style={[
-            tw`py-2 px-5`,
+            tw`py-2`,
             {
               flexDirection: "row",
             },
           ]}
         >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
+          <Pressable
+            style={[
+              tw`pb-2`,
+              {
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+                borderBottomWidth: view.image && 1,
+                borderBottomColor:
+                  view.image && (colorMode === "light" ? "black" : "white"),
+              },
+            ]}
+            onPress={() => {
+              toggleView(true, false);
             }}
           >
             <MaterialIcons
-              name="grid-on"
+              name="insert-photo"
               size={32}
               color={colorMode === "light" ? "black" : "white"}
             />
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
+          </Pressable>
+          <Pressable
+            style={[
+              tw`pb-2`,
+              {
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+                borderBottomWidth: view.video && 1,
+                borderBottomColor:
+                  view.video && (colorMode === "light" ? "black" : "white"),
+              },
+            ]}
+            onPress={() => {
+              toggleView(false, true);
             }}
           >
-            <Fontisto
-              name="locked"
-              size={29}
+            <FontAwesome
+              name="video-camera"
+              size={32}
               color={colorMode === "light" ? "black" : "white"}
             />
-          </View>
+          </Pressable>
         </View>
-        <FreePosts />
-
+        {view.image && <ImagePosts />}
+        {view.video && <VideoPosts />}
         <MenuModal
           isModalVisible={isModalVisible}
           setModalVisible={setModalVisible}

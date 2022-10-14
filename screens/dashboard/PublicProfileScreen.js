@@ -13,7 +13,6 @@ import { GeneralContext } from "../../contexts/general/state";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
-import FreePosts from "../../components/FreePosts";
 import { PublicContext } from "../../contexts/dashboard/public/state";
 import { AlertContext } from "../../contexts/alert/state";
 import { Alert } from "../../utils/alert";
@@ -221,12 +220,14 @@ const PublicProfileScreen = ({ navigation, route }) => {
         >
           {!isLoading &&
             searchedUserInfo.firstName + " " + searchedUserInfo.lastName}{" "}
-          <MaterialIcons
-            name="verified"
-            size={14}
-            color="#0ea5e9"
-            style={tw`ml-1`}
-          />
+          {searchedUserInfo.email_verified && (
+            <MaterialIcons
+              name="verified"
+              size={14}
+              color="#0ea5e9"
+              style={tw`pt-1 ml-1`}
+            />
+          )}
         </Text>
         <Text
           style={{
@@ -407,7 +408,7 @@ const PublicProfileScreen = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <FreePosts />
+      {/* <FreePosts /> */}
       <Alert />
     </SafeAreaView>
   );

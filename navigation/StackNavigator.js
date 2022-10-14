@@ -22,6 +22,7 @@ import FollowerScreen from "../screens/dashboard/FollowerScreen";
 import NewPostScreen from "../screens/dashboard/NewPostScreen";
 import PostManageScreen from "../screens/dashboard/PostManageScreen";
 import CameraScreen from "../screens/dashboard/CameraScreen";
+import PrivatePostDetails from "../screens/dashboard/PrivatePostDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -133,6 +134,13 @@ const StackNavigator = () => {
             <Stack.Screen
               name="camera"
               component={CameraScreen}
+              options={{
+                headerShown: false,
+              }}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="private_post_details"
+              component={PrivatePostDetails}
               options={{
                 headerShown: false,
               }}

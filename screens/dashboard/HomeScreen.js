@@ -1,14 +1,22 @@
-import { ScrollView, TouchableOpacity, View, Dimensions } from "react-native";
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  RefreshControl,
+} from "react-native";
 import React, { useContext } from "react";
 import tw from "twrnc";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneralContext } from "../../contexts/general/state";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Feeds from "../../components/Feeds";
+import { PrivateContext } from "../../contexts/dashboard/private/state";
 
 const HomeScreen = ({ navigation }) => {
   const { height, width } = Dimensions.get("window");
   const { colorMode } = useContext(GeneralContext);
+  const { isFetching, fetchFeeds } = useContext(PrivateContext);
 
   return (
     <SafeAreaView
@@ -41,8 +49,15 @@ const HomeScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <Feeds />
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={fetchFeeds} />
+        }
+      >
+        <View style={tw`mb-20`}>
+          <Feeds />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

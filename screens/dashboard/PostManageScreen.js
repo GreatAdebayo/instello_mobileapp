@@ -5,9 +5,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  Switch,
 } from "react-native";
-import React, { useContext, useEffect, Fragment, useState } from "react";
+import React, { useContext, useEffect, Fragment } from "react";
 import tw from "twrnc";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneralContext } from "../../contexts/general/state";
@@ -27,7 +26,6 @@ const postSchema = yup.object().shape({
 });
 
 const PostManageScreen = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
   const { height, width } = Dimensions.get("window");
   const { colorMode } = useContext(GeneralContext);
   const {
@@ -75,7 +73,7 @@ const PostManageScreen = ({ navigation }) => {
         initialValues={{
           caption: "",
         }}
-        onSubmit={(values) => uploadAssets(values, isEnabled)}
+        onSubmit={(values) => uploadAssets(values)}
         validationSchema={postSchema}
       >
         {({
@@ -143,7 +141,7 @@ const PostManageScreen = ({ navigation }) => {
                     source={{
                       uri: selectedAssets[0].uri,
                     }}
-                    isLooping
+                    isLooping={false}
                     shouldPlay={true}
                   />
                 ) : (
@@ -208,7 +206,7 @@ const PostManageScreen = ({ navigation }) => {
               </View>
             </View>
 
-            <View
+            {/* <View
               style={tw`m-3 border-b border-t py-3 ${
                 colorMode === "light" ? "border-gray-300" : "border-zinc-700"
               }`}
@@ -243,7 +241,7 @@ const PostManageScreen = ({ navigation }) => {
                   value={isEnabled}
                 />
               </View>
-            </View>
+            </View> */}
           </Fragment>
         )}
       </Formik>

@@ -8,7 +8,7 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import tw from "twrnc";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneralContext } from "../../contexts/general/state";
@@ -20,8 +20,13 @@ import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { Ionicons } from "@expo/vector-icons";
 import { PrivateContext } from "../../contexts/dashboard/private/state";
+import PostTypeModal from "../../components/PostTypeModal";
 
 const NewPostScreen = ({ navigation }) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const openModal = () => {
+    setModalVisible(!isModalVisible);
+  };
   const { height, width } = Dimensions.get("window");
   const { colorMode } = useContext(GeneralContext);
   const {
@@ -43,7 +48,11 @@ const NewPostScreen = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       const assets = await MediaLibrary.getAssetsAsync({
-        mediaType: [MediaLibrary.MediaType.photo, MediaLibrary.MediaType.video],
+        mediaType: [
+          MediaLibrary.MediaType.photo,
+
+          // MediaLibrary.MediaType.video
+        ],
         base64: true,
       });
 
@@ -51,10 +60,12 @@ const NewPostScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const pickImage = async () => {
+  const pickImage = async (mode) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: mode
+        ? ImagePicker.MediaTypeOptions.Photo
+        : ImagePicker.MediaTypeOptions.Videos,
       aspect: [4, 3],
       quality: 1,
       // allowsMultipleSelection: true,
@@ -150,7 +161,7 @@ const NewPostScreen = ({ navigation }) => {
               justifyContent: "center",
             }}
             onPress={() => {
-              pickImage();
+              openModal();
             }}
           >
             <Text
@@ -160,7 +171,7 @@ const NewPostScreen = ({ navigation }) => {
                 color: colorMode === "light" ? "black" : "white",
               }}
             >
-              Recents
+              Photos
             </Text>
             <MaterialIcons
               name="keyboard-arrow-down"
@@ -311,6 +322,11 @@ const NewPostScreen = ({ navigation }) => {
             ))}
           </View>
         </ScrollView>
+        <PostTypeModal
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          pickImage={pickImage}
+        />
       </View>
     </SafeAreaView>
   );
